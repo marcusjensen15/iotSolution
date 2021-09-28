@@ -63,11 +63,11 @@ async function collectAllApiDataByStatusQuery(statusQuery){
 
 //Filtering returned data by parentId. Could have been done using the 'filter' method.
 
-function filterApiDataByParentId(data, parentId){
+function filterApiDataByParentId(allApiDataByStatusQuery, parentId){
 
     const resultsMatchingParentId = [];
 
-    for (const entry of data){
+    for (const entry of allApiDataByStatusQuery){
         if (entry.parent && entry.parent.id === parentId){
             resultsMatchingParentId.push(entry);
         }
