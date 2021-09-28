@@ -97,26 +97,11 @@ function executeAverageRotorSpeedCalculation(filteredData){
 avgRotorSpeed("RUNNING",2);
 
 
-
-// Page number (in GET request returns only the results for that page.
-// Need to write a loop to go through all of the pages, regardless of how many there are.
-// EG: 'RUNNING' has 4 pages, 'STOP' has 3 pages of data.
-// Pages start at page 0.
-
-// getApiDataByPageAndStatusQuery -> collectAllApiDataByStatusQuery -> filterApiDataByParentID -> calculateAverageRotorSpeed -> (Return calculateAverageRotorSpeed)
-
-// Could add rejection statement to getApiDataByPageAndStatusQuery
-
-// Final function will flow together like this (calling all of them separately):
-
-// async function avgRotorSpeed (statusQuery, parentId) {
-
-    // const AllApiDataByStatusQuery = await collectAllApiDataByStatusQuery(statusQuery);
-
-    // const filteredDataByParentId = filterApiDataByParentId(apiDataByStatusQuery, parentId);
-
-    // return executeAverageCalculation(filteredDataByParentId);
-
-
-// }
+// Strategy to solve:
+//
+// 1. Make single API Call: Write a function that returns API data given the statusQuery and pageNumber
+// 2. Collect all relevant data: Write a function that loops through and calls function #1 for 'i' number of pages, collects this data, and returns all of it (based on statusQuery).
+// 3. Filter Data: Write a function that accepts the result of function #2, and filters based on parentId.
+// 4. Calculate average: Write a function that accepts the filtered data, and calculates the average rotor speed.
+// 5. Execute: Write a function calling all of these functions so the execution stack is clear and readable.
 
