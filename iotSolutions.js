@@ -15,7 +15,7 @@ async function avgRotorSpeed(statusQuery, parentId){
 
 };
 
-// In the real world, would use 'fetch' below.
+
 
 function getApiDataByPage(statusQuery, pageNumber) {
     var https = require('https');
