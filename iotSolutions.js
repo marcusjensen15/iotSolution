@@ -1,4 +1,4 @@
-// What I would have done if I had a bit more time/fully understood the problem after reading it in detail:
+// Revised Solution:
 
 
 async function avgRotorSpeed(statusQuery, parentId){
@@ -7,13 +7,15 @@ async function avgRotorSpeed(statusQuery, parentId){
 
     const filteredDataByParentId = filterApiDataByParentId(allApiDataByStatusQuery, parentId);
 
-    // In production this will be a 'return' not console.log
+    const avgRotorSpeedResult = executeAverageRotorSpeedCalculation(filteredDataByParentId);
 
-    console.log(executeAverageRotorSpeedCalculation(filteredDataByParentId));
+// In production this will be a 'return' not console.log
+
+    console.log(verifyResult(avgRotorSpeedResult));
 
 };
 
-//In the real world, would use 'fetch' below.
+// In the real world, would use 'fetch' below.
 
 function getApiDataByPage(statusQuery, pageNumber) {
     var https = require('https');
@@ -46,7 +48,7 @@ async function collectAllApiDataByStatusQuery(statusQuery){
 
   const allPagesOfDataByStatus = [];
 
-  //starting the loop at 0 will double count it (any page number less than 1 returns the first page).
+// Starting the loop at 0 will double count it (any page number less than 1 returns the first page).
 
     for (var i = 1; i <= totalNumberOfPagesForStatus; i++){
 
@@ -54,14 +56,14 @@ async function collectAllApiDataByStatusQuery(statusQuery){
          allPagesOfDataByStatus.push(resultsForPageNumber.data);
      }
 
-     // this returns a 2-D array. Flattening it so it is easier to work with.
+// This returns a 2-D array. Flattening it so it is easier to work with.
 
       return allPagesOfDataByStatus.flat();
 
 };
 
 
-//Filtering returned data by parentId. Could have been done using the 'filter' method.
+// Filtering returned data by parentId.
 
 function filterApiDataByParentId(allApiDataByStatusQuery, parentId){
 
@@ -76,7 +78,6 @@ function filterApiDataByParentId(allApiDataByStatusQuery, parentId){
     return resultsMatchingParentId;
 };
 
-// could also use reduce method here:
 
 function executeAverageRotorSpeedCalculation(filteredData){
 
@@ -94,14 +95,29 @@ function executeAverageRotorSpeedCalculation(filteredData){
 
 };
 
-avgRotorSpeed("RUNNING",2);
+// Verify result. If provided NaN, return 0. If provided number, round it down.
+
+function verifyResult(averageRotorSpeedCalcResult){
+
+    if (isNaN(averageRotorSpeedCalcResult)){
+        return 0;
+    }
+
+    return Math.floor(averageRotorSpeedCalcResult);
+
+};
+
+
+avgRotorSpeed("RUNNING",7)
+
 
 
 // Strategy to solve:
-//
+
 // 1. Make single API Call: Write a function that returns API data given the statusQuery and pageNumber
 // 2. Collect all relevant data: Write a function that loops through and calls function #1 for 'i' number of pages, collects this data, and returns all of it (based on statusQuery).
 // 3. Filter Data: Write a function that accepts the result of function #2, and filters based on parentId.
 // 4. Calculate average: Write a function that accepts the filtered data, and calculates the average rotor speed.
-// 5. Execute: Write a function calling all of these functions so the execution stack is clear and readable.
+// 5. Verify result: Write function to round number down if provided a number, or return 0 if provided NaN.
+// 6. Execute: Write a function calling all of these functions so the execution stack is clear and readable.
 
